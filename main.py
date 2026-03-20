@@ -14,17 +14,17 @@ def make_move(numbers, choice, total, bank, action):
 
     numbers.pop(index)
 
-    # 🔹 vienkārši paņem
+    # vienkārši paņem
     if action == "take":
         total += choice
 
-    # 🔹 sadala 2
+    # sadala 2
     elif action == "split" and choice == 2:
         numbers.insert(index, 1)
         numbers.insert(index + 1, 1)
         bank += 1
 
-    # 🔹 sadala 4
+    # sadala 4
     elif action == "split" and choice == 4:
         numbers.insert(index, 2)
         numbers.insert(index + 1, 2)
