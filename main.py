@@ -1,44 +1,33 @@
 from random import randint
 
-
 def create_game(length):
-    numbers = []
-    for _ in range(length):
-        numbers.append(randint(1, 4))
-    return numbers
-
+    # Generē virkni ar skaitļiem 1, 2, 3, 4
+    return [randint(1, 4) for _ in range(length)]
 
 def make_move(numbers, choice, total, bank, action):
-    numbers = numbers.copy()
-    index = numbers.index(choice)
+    new_numbers = numbers.copy()
+    try:
+        index = new_numbers.index(choice)
+        new_numbers.pop(index)
+    except ValueError:
+        return numbers, total, bank
 
-    numbers.pop(index)
-
-    # vienkārši paņem
     if action == "take":
-        total += choice
-
-    # sadala 2
+        total += choice # Pieskaita skaitli kopējam punktu skaitam
     elif action == "split" and choice == 2:
-        numbers.insert(index, 1)
-        numbers.insert(index + 1, 1)
-        bank += 1
-
-    # sadala 4
+        new_numbers.extend([1, 1]) # Sadala 2 divos 1
+        bank += 1 # Papildina banku par 1
     elif action == "split" and choice == 4:
-        numbers.insert(index, 2)
-        numbers.insert(index + 1, 2)
-        total += 2
+        new_numbers.extend([2, 2]) # Sadala 4 divos 2
+        total += 2 # Pieskaita 2 punktus kopējam skaitam
 
-    return numbers, total, bank
-
+    return new_numbers, total, bank
 
 def get_winner(total, bank):
+    # Uzvaras nosacījumi
     if total % 2 == 0 and bank % 2 == 0:
-        return "Uzvar pirmais spēlētājs!"
-
-    elif total % 2 == 1 and bank % 2 == 1:
-        return "Uzvar otrais spēlētājs!"
-
+        return "Uzvar spēlētājs, kurš uzsāka spēli (Pāra/Pāra)!"
+    elif total % 2 != 0 and bank % 2 != 0:
+        return "Uzvar otrais spēlētājs (Nepāra/Nepāra)!"
     else:
         return "Neizšķirts!"
