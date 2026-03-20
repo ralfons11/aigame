@@ -4,7 +4,7 @@ from tree import find_best_move
 
 st.title("Spēle ar AI")
 
-# --- session defaults ---
+# session defaults
 defaults = {
     "numbers": [],
     "total": 0,
@@ -24,13 +24,13 @@ def game_over(numbers):
     return len(numbers) == 0
 
 
-# --- izvēles ---
+# izvēles
 length = st.number_input("Garums", 15, 20, 15)
 starter = st.radio("Kurš sāk?", ["Spēlētājs", "AI"])
 algorithm = st.radio("Algoritms", ["Minimax", "Alpha-Beta"])
 
 
-# --- start ---
+# start
 if st.button("Sākt spēli"):
     st.session_state.numbers = create_game(length)
     st.session_state.total = 0
@@ -44,13 +44,13 @@ if st.button("Sākt spēli"):
     st.rerun()
 
 
-# --- vēsture ---
+# vēsture
 st.subheader("Gājienu vēsture:")
 for h in st.session_state.history:
     st.write(h)
 
 
-# --- beigas ---
+# beigas
 if st.session_state.game_over:
     st.subheader("Spēle beigusies!")
     st.write("Total:", st.session_state.total)
@@ -61,7 +61,7 @@ if st.session_state.game_over:
     st.stop()
 
 
-# --- skaitļu izvēle ---
+# skaitļu izvēle
 if st.session_state.numbers:
 
     st.subheader("Izvēlies skaitli:")
@@ -75,7 +75,7 @@ if st.session_state.numbers:
                 if st.session_state.turn != 1:
                     st.rerun()
 
-                # 🔥 1 un 3 → uzreiz TAKE
+# uzreiz TAKE
                 if num in [1, 3]:
                     new_numbers, new_total, new_bank = make_move(
                         st.session_state.numbers,
@@ -99,13 +99,13 @@ if st.session_state.numbers:
 
                     st.rerun()
 
-                # 🔥 2 un 4 → izvēle
+# izvēle 2 un 4
                 else:
                     st.session_state.selected = num
                     st.rerun()
 
 
-# --- darbības (tikai 2 un 4) ---
+# darbības (tikai 2 un 4)
 if st.session_state.selected is not None and st.session_state.turn == 1:
 
     num = st.session_state.selected
@@ -113,7 +113,7 @@ if st.session_state.selected is not None and st.session_state.turn == 1:
 
     col1, col2 = st.columns(2)
 
-    # TAKE
+# TAKE
     with col1:
         if st.button("Take"):
 
@@ -139,7 +139,7 @@ if st.session_state.selected is not None and st.session_state.turn == 1:
 
             st.rerun()
 
-    # SPLIT
+# SPLIT
     with col2:
         if st.button("Split"):
 
@@ -166,7 +166,7 @@ if st.session_state.selected is not None and st.session_state.turn == 1:
             st.rerun()
 
 
-# --- info ---
+# info
 st.subheader("Spēles stāvoklis")
 col1, col2 = st.columns(2)
 
@@ -177,7 +177,7 @@ with col2:
     st.metric("Banka", st.session_state.bank)
 
 
-# --- AI ---
+# AI
 if st.session_state.turn == 2 and not st.session_state.game_over:
 
     best = find_best_move(
