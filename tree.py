@@ -1,3 +1,4 @@
+from platform import node
 import time
 from main import make_move
 
@@ -62,34 +63,30 @@ def evaluate(node, starter_type):
     global nodes_evaluated
     nodes_evaluated += 1
 
-    if is_game_over(node.numbers):
-        if node.total % 2 == 0 and node.bank % 2 == 0:
-            return 100 if starter_type == 2 else -100
-
-        if node.total % 2 == 1 and node.bank % 2 == 1:
-            return 100 if starter_type == 2 else -100
-        
-        return 0
-
     score = 0
+    if starter_type == 2 and node.bank % 2 == 0:    # if computer starts
+        score += 2
+    if starter_type == 1 and node.bank % 2 == 1:    # if player starts
+        score += 2
 
-    if node.total % 2 == 1:
-        score += 10
-    if node.bank % 2 == 1:
-        score += 10
+    para2 = 0
+    if node.numbers:
+        for num in node.numbers:
+            if num == 2:
+                para2 += 1
 
-    if starter_type == 1:
-        return score 
-    else:
-        return -score
+    if para2 % 2 == 0:
+        score += 1
+    
+    return score
 
 
-def minimax(node, depth, maximizing, starter_type):
+
+def minimax(node, depth, maximizing, starter_type):                                                                                                                                                                        #AHHHHHHHHHH
     if depth == 0 or is_game_over(node.numbers):
         return evaluate(node, starter_type)
 
     children = generate_children(node)
-
     if maximizing:
         best = -float('inf')
         for child in children:
@@ -100,6 +97,7 @@ def minimax(node, depth, maximizing, starter_type):
         for child in children:
             best = min(best, minimax(child, depth - 1, True, starter_type))
         return best
+    
 
 
 def alphabeta(node, depth, alpha, beta, maximizing, starter_type):
